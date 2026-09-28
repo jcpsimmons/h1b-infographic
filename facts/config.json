@@ -1,0 +1,82 @@
+[
+  {
+    "rank": 1,
+    "id": "denied-share",
+    "value": "{pct1:share_2025}",
+    "headline": "Of the H-1B applications decided in 2025, {pct1:share_2025} were denied, down from {pct1:share_2010} in 2010.",
+    "detail": "That is {int:denied_2025} denials out of {int:decided_2025} decisions in 2025, against {int:denied_2010} out of {int:decided_2010} in 2010. Withdrawn applications count in the total.",
+    "how": "H-1B applications are the labor condition applications in the Department of Labor's LCA files (case_kind LCA). A denial is a final status of DENIED. The year is the calendar year of the decision date. The total counts every application decided that year: certified, certified then withdrawn, withdrawn and denied. October 2025 has unusually few decisions in the file; without that month the 2025 share is {pct1:share_2025_ex_oct}. The data does not say why the share fell."
+  },
+  {
+    "rank": 2,
+    "id": "h6-half-from-few",
+    "value": "{int:groups_for_half}",
+    "headline": "Half of all certified H-1B applications decided from 2010 to 2025 came from {int:groups_for_half} employer groups, out of {int:employer_groups}.",
+    "detail": "That is {num2:pct_of_groups}% of employer groups. A group is a normalized employer name, so one company can appear as more than one group.",
+    "how": "Certified H-1B applications (case_kind LCA, status CERTIFIED) decided from 2010 to 2025 with a non-blank employer key: {int:certified_applications} in all. Employer groups are ranked by application count and added up until they reach half of the total."
+  },
+  {
+    "rank": 3,
+    "id": "apps-per-employer-group",
+    "value": "{num1:per_2025}",
+    "headline": "In 2025 the average employer group filed {num1:per_2025} certified H-1B applications, up from {num1:per_2010} in 2010.",
+    "detail": "Applications rose from {int:apps_2010} to {int:apps_2025} while the number of employer groups barely moved, from {int:groups_2010} to {int:groups_2025}.",
+    "how": "Certified H-1B applications decided in each year, divided by the distinct non-blank employer keys among them. An employer key is a normalized-name grouping, not a legal entity."
+  },
+  {
+    "rank": 4,
+    "id": "day-seven-decisions",
+    "value": "{pct0:share_2020_2025}",
+    "headline": "From 2020 to 2025, {pct1:share_2020_2025} of certified H-1B applications were decided exactly seven days after they were received, up from {pct1:share_2010_2019} in 2010 to 2019.",
+    "detail": "That is {int:day7_2020_2025} of {int:certified_2020_2025} applications, against {int:day7_2010_2019} of {int:certified_2010_2019}.",
+    "how": "Calendar days from received_date to decision_date on certified H-1B applications (case_kind LCA, status CERTIFIED), grouped by decision year."
+  },
+  {
+    "rank": 5,
+    "id": "software-developer-share",
+    "value": "{pct0:share}",
+    "headline": "About one in three certified H-1B applications decided from 2023 to 2025 was for a software developer.",
+    "detail": "{int:software_developers} of {int:certified_applications} applications carry the occupation code 15-1252.00, which the filings label Software Developers.",
+    "how": "Certified H-1B applications (case_kind LCA, status CERTIFIED) decided from 2023 to 2025, grouped on the soc_code field as filed. Seven-character codes such as 15-1252 are completed to 15-1252.00 first, so both spellings of the code are counted."
+  },
+  {
+    "rank": 6,
+    "id": "median-wage-growth",
+    "value": "{num1:ratio}×",
+    "headline": "The median offered wage on certified H-1B applications rose from {usd:median_2011} in 2011 to {usd:median_2025} in 2025, about {num1:ratio} times as much.",
+    "detail": "These are nominal dollars, not adjusted for inflation. The offered wage is the wage_from field, the low end of the range stated on the application, converted to a yearly amount.",
+    "how": "Certified H-1B applications (case_kind LCA, status CERTIFIED) decided in 2011 and in 2025. Hourly, weekly, bi-weekly and monthly wages are converted to yearly amounts (x2080, x52, x26, x12). Values below 15,000 or above 1,000,000 a year are dropped, which kept {int:n_2011} applications from 2011 and {int:n_2025} from 2025."
+  },
+  {
+    "rank": 7,
+    "id": "h2-exact-pw",
+    "value": "{pp1:pct_exact}",
+    "headline": "{pp1:pct_exact} of certified H-1B applications decided from 2020 to 2025 offered a wage exactly equal to the prevailing wage.",
+    "detail": "That is {int:exact_match} of {int:applications} applications, after converting both wages to yearly amounts.",
+    "how": "wage_from (the wage offered) compared with pw (the prevailing wage stated on the application), both converted to yearly amounts, on certified H-1B applications (case_kind LCA, status CERTIFIED). Rows with either value outside 15,000 to 1,000,000 a year are dropped."
+  },
+  {
+    "rank": 8,
+    "id": "cross-state-share",
+    "value": "{pct0:share}",
+    "headline": "{pct1:share} of certified H-1B applications decided from 2023 to 2025 list a worksite in a different state from the employer's address.",
+    "detail": "That is {int:different_state} of {int:applications} applications. An employer's address is often its headquarters or a filing address, so a difference does not by itself say anything about the application.",
+    "how": "Certified H-1B applications (case_kind LCA, status CERTIFIED) decided from 2023 to 2025 where both the employer state and the primary worksite state map to a state or DC. Applications with several worksites are compared on the primary worksite only."
+  },
+  {
+    "rank": 9,
+    "id": "march-share",
+    "value": "{pct0:share_2025}",
+    "headline": "March's share of the year's H-1B applications fell from {pct1:share_2016} in 2016 to {pct1:share_2025} in 2025.",
+    "detail": "{int:march_2016} of {int:received_2016} applications were received in March 2016, against {int:march_2025} of {int:received_2025} in 2025. October 2025 has almost no applications on record ({int:oct_2025}, against {int:sep_2025} in September), which lowers the 2025 total.",
+    "how": "H-1B applications (case_kind LCA, any status) counted by the month and year of received_date, the date the Department of Labor received them. The data does not say why the timing changed."
+  },
+  {
+    "rank": 10,
+    "id": "austin-rank",
+    "value": "No. {int:rank_2025}",
+    "headline": "Austin, Texas rose from No. {int:rank_2012} to No. {int:rank_2025} among worksite cities for certified H-1B applications between 2012 and 2025.",
+    "detail": "{int:austin_2012} applications in 2012 and {int:austin_2025} in 2025. It has been ahead of San Francisco, which had {int:sf_2025} in 2025, since {raw:ahead_of_sf_since}.",
+    "how": "Certified H-1B applications (case_kind LCA, status CERTIFIED) ranked by worksite city and state, with the city name uppercased and trimmed. Only applications whose employer state and worksite state both map to a state or DC are counted. Spelling variants of a city are not merged, so ranks could shift slightly."
+  }
+]

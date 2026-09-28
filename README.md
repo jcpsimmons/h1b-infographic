@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# What the H-1B paperwork says
 
-## Getting Started
+An infographic site built from the U.S. Department of Labor's public H-1B and PERM disclosure files: about 11.4 million cases,
+charted by year, wage, place, employer and occupation, with ten verified facts up top.
 
-First, run the development server:
+The look is a green-bar printout: the alternating stripes are the gridlines.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+![The site's opening screen: a red CERTIFIED stamp across the headline, headline totals, and the first of ten facts](docs/hero.jpg)
+
+## Run it
+
+```sh
+npm install
+npm run dev          # http://localhost:3000
+npm run build        # static site in out/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The site is fully static. To host under a sub-path (GitHub Pages), build with `NEXT_PUBLIC_BASE_PATH=/your-repo-name`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Where the numbers come from
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Every number is computed by a DuckDB query in [`queries/`](queries) over a local copy of public records, and the aggregated result
+is committed in [`src/data/`](src/data). The site builds without the source data. To regenerate a chart:
 
-## Learn More
+```sh
+brew install duckdb                       # or see duckdb.org
+export H1B_DATA_DIR=/path/to/dataset      # folder containing LCA-PERM/, SBA/, FUEL-PUMPS/, STAFFING-MAJORS/
+node scripts/run-query.mjs certified-per-year
+```
 
-To learn more about Next.js, take a look at the following resources:
+The source records are published by the [Department of Labor](https://www.dol.gov/agencies/eta/foreign-labor/performance),
+the [Small Business Administration](https://data.sba.gov/dataset/ppp-foia) and the [EPA](https://www.epa.gov/ust).
+They were compiled into one research dataset of Parquet files; `LCA-PERM/filing_current` is the spine.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Read [`docs/CHART-GUIDE.md`](docs/CHART-GUIDE.md) for the data rules every chart follows (calendar years, what counts as certified,
+blank versus zero, state normalization, wage annualization).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## How it is organized
 
-## Deploy on Vercel
+| Path | What |
+|---|---|
+| `queries/<id>.sql` | one query per chart |
+| `queries/facts/<id>.sql` | one query per fact on the facts page |
+| `src/data/<id>.json` | the query result the chart renders |
+| `src/charts/<id>.tsx` | the chart: `meta`, a computed `takeaway`, and the component |
+| `facts/config.json` | wording templates for the ten facts; numbers are filled from query results |
+| `scripts/` | `run-query`, `check-chart`, `gen-registry`, `build-facts`, `verify-facts`, `audit` |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```sh
+node scripts/gen-registry.mjs      # rebuild the chart index after adding a chart
+npx tsx scripts/check-chart.mts <id>   # typecheck and render one chart in jsdom
+node scripts/verify-facts.mjs      # re-run every fact query against the dataset
+node scripts/audit.mjs             # scan for personal data and accusatory wording
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## What this does not say
+
+Appearing in these records is not an accusation, and everyone named is presumed to have followed the law. Most applications are
+lawful. A match between two datasets shows an apparent data relationship, not a finding of fact. Counts of applications are not counts
+of workers or visas. The records can contain errors carried over from the original files. Nothing here is legal advice, and none of it
+should be used to make decisions about any person.
+
+The repository holds aggregates only: no names, emails, phone numbers or street addresses.
+
+## License
+
+Code is MIT licensed. The underlying records are U.S. government works and facts from public records.
